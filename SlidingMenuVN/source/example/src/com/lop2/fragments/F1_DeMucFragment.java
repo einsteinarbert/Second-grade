@@ -4,12 +4,16 @@ import java.util.ArrayList;
 
 import inout2nd.De_Muc;
 import inout2nd.IOData;
+import inout2nd.SetTing;
+import inout2nd.User;
 
 import com.jeremyfeinstein.slidingmenu.example.R;
 import com.lop2.anim.ListAdapterCustom;
 
 import android.app.FragmentManager.OnBackStackChangedListener;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -65,8 +69,14 @@ public class F1_DeMucFragment extends Fragment {
 		ListView Lv = new ListView(v.getContext());
 		// TODO txt sẽ là listView Adapter
 		IOData getData = new IOData();
+		// duy test
+		User user = new User("1","duy","30","1","2","3","4","5");
+		getData.inserUser(user);
+		SetTing st= new SetTing("0", "0", "1", "1") ;
+		getData.updateSetting(st);
+		////////// end tets
 		de_muc = getData.getListDeMuc(idChuong);
-
+         
 		String[] menuDemuc = new String[de_muc.size()];
 		ArrayList<String> list_de_muc = new ArrayList<String>();
 		for (int i = 0; i < de_muc.size(); i++) {
@@ -117,9 +127,15 @@ public class F1_DeMucFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int id_de_muc, long arg3) {
+				
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(arg0.getContext(),
 						Changer2_KienThucDeMucFragment.class);
+				//test duy 
+				Bitmap imag =  BitmapFactory.decodeResource(getResources(), R.drawable.so8);
+				IOData getData = new IOData();
+				getData.updateImageDeMuc(de_muc.get(id_de_muc).getID(), imag);
+				//
 				intent.putExtra("idChuong", idChuong);
 				intent.putExtra("idDemuc", de_muc.get(id_de_muc).getID());
 				F3_LamBaiTap.setIdDemuc(de_muc.get(id_de_muc).getID());

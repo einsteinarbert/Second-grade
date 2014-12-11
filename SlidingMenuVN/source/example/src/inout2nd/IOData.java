@@ -2,6 +2,7 @@ package inout2nd;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.lop2.main.Lop2;
@@ -129,4 +130,19 @@ public class IOData {
 		return than_bai;
 		
 	}
+	public void inserUser(User user){
+		 DbHelper.InsertUser(user);
+		
+	}
+	public void updateSetting(SetTing st){
+	  DbHelper.upUerSetTing(st);
+		
+	}
+	public void updateImageDeMuc(String idDeMuc , Bitmap image){
+		  DbHelper.updateImageDeMuc(idDeMuc, image);
+			
+		}
+	public De_Muc getde_muc(String idDeMuc){
+		 return DbHelper.get_de_muc(idDeMuc);
+		}
 }

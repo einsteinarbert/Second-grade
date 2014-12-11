@@ -5,10 +5,8 @@ import inout2nd.CauHoi;
 import inout2nd.IOData;
 import inout2nd.SinhCauHoi;
 import inout2nd.Trac_Nghiem;
-import inout2nd.UpdateSuport;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeoutException;
 
 import org.w3c.dom.Text;
 
@@ -68,10 +66,7 @@ public class F3_LamBaiTap extends Fragment {
 	private RadioButton dapAn_D;
 	private boolean gameover = false;
 	public static boolean createdData = false;
-	private MediaPlayer tingkerTrue, tingkerFalse;
-	private TextView textUser;
-	private String userInfor;
-
+	private MediaPlayer tingkerTrue,tingkerFalse;
 	public void setScreenSize(int w, int h) {
 		width = w;
 		height = h;
@@ -126,47 +121,15 @@ public class F3_LamBaiTap extends Fragment {
 			v.addView(img, param);
 			Toast.makeText(getActivity(), "Kéo sang để hiện menu",
 					Toast.LENGTH_SHORT).show();
-			textUser = new TextView(this.v.getContext());
-			textUser.setText("Touch here!");
-			textUser.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							try {
-								userInfor = UpdateSuport
-										.getStringContent("http://wireless-vietvudanh.c9.io/public/api/v1/user/");
-								Log.e("String", "~> "+ userInfor);
-								textUser.setText(userInfor);
-							} catch (TimeoutException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					}).start();
-					
-				}
-			});
-			
-			v.addView(textUser);
 			return v;
 		} else
 			switch (idOption) {
 			case 0:
-				if (Lop2.md != null && Lop2.md.isPlaying()) {
+				if(Lop2.md!=null && Lop2.md.isPlaying()){
 					Lop2.md.pause();
 				}
-				tingkerTrue = MediaPlayer
-						.create(getActivity(), R.raw.beep_true);
-				tingkerFalse = MediaPlayer.create(getActivity(),
-						R.raw.beep_false);
+				tingkerTrue =  MediaPlayer.create(getActivity(), R.raw.beep_true);
+				tingkerFalse =  MediaPlayer.create(getActivity(), R.raw.beep_false);
 				answerRecorder = new int[soCauHoi];// [tra_loi][dap_an]
 				for (int i = 0; i < soCauHoi; i++) {
 					answerRecorder[i] = 0;
@@ -175,24 +138,24 @@ public class F3_LamBaiTap extends Fragment {
 				SinhCauHoi sch = new SinhCauHoi(idDeMuc,
 						(int) SettingBaiTap.getMinute());
 				try {
-
+					
 					createdData = false;
 					cacCauHoi = new ArrayList<String>(sch.getListCauHoi());
 					createdData = true;
-					// cacCauHoi.add("xxx");
-					Log.e("cacCauHoi co pt 0", ">>>>" + cacCauHoi.get(0));
+					//cacCauHoi.add("xxx");
+					Log.e("cacCauHoi co pt 0", ">>>>"+cacCauHoi.get(0));
 				} catch (InterruptedException e) {
 					Toast.makeText(v.getContext(),
 							"Có lỗi nhỏ, vui lòng chạy lại. ",
 							Toast.LENGTH_SHORT).show();
-				} catch (Exception e) {
+				}catch (Exception e) {
 					Toast.makeText(v.getContext(),
 							"Có lỗi nhỏ, vui lòng chạy lại. ",
 							Toast.LENGTH_SHORT).show();
 				}
-
+				
 				final int[] dapAn = sch.getListDapAn();
-				// Log.e("cacCauHoi", ">>>>"+);
+				//Log.e("cacCauHoi", ">>>>"+);
 				ABCD = new Randomize();
 				ABCD.setRangeValue(1, 4);
 				dapAnDung = ABCD.getRandomNumber();
@@ -209,11 +172,12 @@ public class F3_LamBaiTap extends Fragment {
 						RelativeLayout.LayoutParams.MATCH_PARENT));
 
 				final TextView cauHoi = new TextView(v.getContext());
-				if (cacCauHoi != null) {
+				if(cacCauHoi!=null){
 					cauHoi.setText(cacCauHoi.get(0));
 					cauHoi.setTextAppearance(v.getContext(),
 							android.R.style.TextAppearance_Medium);
-				} else {
+				}
+				else{
 					Log.e("LOILOILOLLOL", ">\"<");
 				}
 				cauHoi.setId(6969);
@@ -334,7 +298,7 @@ public class F3_LamBaiTap extends Fragment {
 								Menu3_OptionMenuTracNghiem.callFinish();
 								F3_LamBaiTap.setIdOption(-2);
 								startActivity(new Intent(v.getContext(),
-										Changer3_LamBaiWindow.class));
+								Changer3_LamBaiWindow.class));
 								return;
 							}
 							newQuestion = true;
@@ -425,7 +389,7 @@ public class F3_LamBaiTap extends Fragment {
 							else
 								Log.e("NULL", "NULL");
 							kq.setText("Số câu trả lời đúng: "
-									+ soCauTraLoiDung + "/" + soCauHoi);
+									+ soCauTraLoiDung+"/"+soCauHoi);
 							kq.setTextAppearance(v.getContext(),
 									android.R.style.TextAppearance_Medium);
 							param = new RelativeLayout.LayoutParams(
@@ -446,7 +410,7 @@ public class F3_LamBaiTap extends Fragment {
 							gameover = true;
 							Menu3_OptionMenuTracNghiem.callFinish();
 							F3_LamBaiTap.setIdOption(-2);
-							createdData = true;
+							createdData=true;
 							startActivity(new Intent(v.getContext(),
 									Changer3_LamBaiWindow.class));
 							return;
@@ -509,10 +473,10 @@ public class F3_LamBaiTap extends Fragment {
 								default:
 									break;
 								}
-
-								if (answerRecorder[thuTuCauHoi] == 1) {
+								
+								if(answerRecorder[thuTuCauHoi]==1){
 									tingkerTrue.start();
-								} else {
+								}else{
 									tingkerFalse.start();
 								}
 							}
@@ -577,8 +541,7 @@ public class F3_LamBaiTap extends Fragment {
 					}
 				else
 					Log.e("NULL", "NULL");
-				kq.setText("Số câu trả lời đúng: " + soCauTraLoiDung + "/"
-						+ soCauHoi);
+				kq.setText("Số câu trả lời đúng: " + soCauTraLoiDung+"/"+soCauHoi);
 				param = new RelativeLayout.LayoutParams(
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				param.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -592,15 +555,14 @@ public class F3_LamBaiTap extends Fragment {
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				param.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				param.addRule(RelativeLayout.BELOW, 1969);
-				kq.setText("Điểm số: "
-						+ Float.toString(10 * ((float) soCauTraLoiDung / soCauHoi)));
+				kq.setText("Điểm số: "+Float.toString(10*((float)soCauTraLoiDung/soCauHoi)));
 				kq.setId(1970);
 				param = new RelativeLayout.LayoutParams(
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				param.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				param.addRule(RelativeLayout.BELOW, 1969);
-				v.addView(kq, param);
-
+				v.addView(kq,param);
+				
 				param = new RelativeLayout.LayoutParams(
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				param.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -609,11 +571,10 @@ public class F3_LamBaiTap extends Fragment {
 				meo.setBackgroundResource(R.drawable.meomeo);
 				v.addView(meo, param);
 				Menu3_OptionMenuTracNghiem.setTestState(false);
-				MediaPlayer bravo = MediaPlayer.create(getActivity(),
-						R.raw.kid_bravo);
+				MediaPlayer bravo = MediaPlayer.create(getActivity(), R.raw.kid_bravo);
 				bravo.start();
-				if (Lop2.md.isPlaying() == false) {
-					Lop2.md = MediaPlayer.create(v.getContext(), R.raw.nu_cuoi);
+				if(Lop2.md.isPlaying()==false){
+					Lop2.md=MediaPlayer.create(v.getContext(), R.raw.nu_cuoi) ;
 					Lop2.md.start();
 				}
 				return v;
@@ -639,5 +600,5 @@ public class F3_LamBaiTap extends Fragment {
 
 		return idOption;
 	}
-
+	
 }

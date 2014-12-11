@@ -69,12 +69,8 @@ public class Menu3_OptionMenuTracNghiem extends ListFragment {
 		 */
 		ListAdapterCustom DeMucAdapter = new ListAdapterCustom(
 				getLayoutInflater(savedInstanceState), menuTracNghiem);
-		int iDdr[] = new int[8];
-		int firstId = R.drawable.m1;
-		iDdr[0] = firstId;
-		for (int i = 1; i < 8; i++) {
-			iDdr[i] = i+firstId;
-		}
+		int iDdr[] = new int[1];
+		iDdr[0] = R.drawable.tho1;
 		DeMucAdapter.setImageList1(iDdr);
 		setListAdapter(DeMucAdapter);
 	}

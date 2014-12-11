@@ -1,12 +1,14 @@
 package inout2nd;
 
+import android.graphics.Bitmap;
+
 public class De_Muc {
 	String ID;
 	String ND;
 	String ID_chuong;
-	String Huong_Dan;
+	Bitmap Huong_Dan;
 	
-	public De_Muc(String id ,String nd,String id_ch,String huongdan){
+	public De_Muc(String id ,String nd,String id_ch,Bitmap huongdan){
 		ID = id;
 		ND = nd;
 		ID_chuong = id_ch;
@@ -24,7 +26,7 @@ public class De_Muc {
 		return ID_chuong;
 		
 	}
-	public String getHuongDan(){
+	public Bitmap getHuongDan(){
 		return Huong_Dan;
 	}
 

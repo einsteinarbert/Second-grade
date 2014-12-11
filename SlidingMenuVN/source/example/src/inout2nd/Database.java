@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 
@@ -27,6 +28,8 @@ public class Database {
 	private static final String TRAC_NHIEM = "Trac_Nghiem";
 	private static final String THAN_BAI = "than_bai";
 	private static final String  DAU_BAI = "Dau_bai";
+	private static final String USER = "User";
+	private static final String SETTING = "SetTing";
 	
 
 	private final Context mCtx;
@@ -120,7 +123,7 @@ public class Database {
 			String nd = cur.getString(cur.getColumnIndex("Noi_Dung"));
 			String id_ch = cur.getString(cur.getColumnIndex("ID_Chuong"));
 			//String huong_dan = cur.getString(cur.getColumnIndex("Huong_Dan"));
-			String huong_dan = "Tự mà học đi em ak :p";
+			Bitmap huong_dan = null;
 			//String fk = cur.getString(cur.getColumnIndex("DG_Rang_Buoc"));
 			if(id_chuong.equals(id_ch)== true){
 				de_muc.add(new De_Muc(id,nd,id_ch,huong_dan));
@@ -185,6 +188,92 @@ public class Database {
 		return than_bai;
    	 }
 
+
+	public void InsertUser(User user)throws SQLException{
+			ContentValues values=new ContentValues();
+			values.put("ID",user.getID());
+			values.put("Name",user.getName());
+			values.put("dateLamBai",user.getDateLamBai() );
+			values.put("deMucLam", user.getDeMucLam());
+			values.put("thoiGianLam", user.getThoiGianLam());
+			values.put("tongThoiGian",user.getTongThoiGianLam() );
+			values.put("DiemSo",user.getDiem() );
+			values.put("tongDiem", user.getTongDiem());
+			String msg="";
+			
+			if(mDb.insert(USER, null, values)==-1){
+				  msg="Failed to insert record";
+			}
+			else{
+				msg="insert record is successful";
+			}	
+		  Log.e("ket qua insert cua user",msg);
+	}
+public User getUserFirt() throws SQLException {
 	
+  	Cursor cur = mDb.query(true, USER, new String[] { "ID","Name","dateLamBai","deMucLam","thoiGianLam","tongThoiGian","DiemSo","tongDiem"}, null, null, null, null, null, null);
+		if (cur.moveToFirst()) {
+			
+			String id = cur.getString(cur.getColumnIndex("ID"));
+			String name = cur.getString(cur.getColumnIndex("Name"));
+			String dateLam = cur.getString(cur.getColumnIndex("dateLamBai"));
+			String demuc  = cur.getString(cur.getColumnIndex("deMucLam"));
+			String timelam  = cur.getString(cur.getColumnIndex("thoiGianLam"));
+			String timetong = cur.getString(cur.getColumnIndex("tongThoiGian"));
+			String diem = cur.getString(cur.getColumnIndex("DiemSo"));
+			String diemTong = cur.getString(cur.getColumnIndex("tongDiem"));
+			//int age = cur.getInt(cur.getColumnIndex(EMP_AGE));
+			cur.close();
+			return new User(id ,name,dateLam,demuc,timelam,timetong,diem,diemTong);
+		}
+
+		cur.close();
+		return null;
+	}
+ public void upUerSetTing(SetTing st){
+	 ContentValues values=new ContentValues();
+		values.put("Dang_Hinh_Hoc", st.getHinhHoc());
+		values.put("Dang_Bieu_Thuc",  st.getHinhHoc());
+		values.put("Dang_Toan_Do", st.getToanDo());
+		values.put("Dang_Tim_X", st.getTimX());
+		String msg="";
+		int ret = mDb.update(SETTING, values,null,null);
+	    Log.e("updatesetting thành cong la 1 else la 0","kq=="+ret);   
+ }
+ public void updateImageDeMuc(String id_demuc , Bitmap image){
+	 	ContentValues values=new ContentValues();
+		values.put("Huong_Dan",Untility.getBytes(image));
+		String msg="";
+		int ret = mDb.update(DE_MUC, values,"ID=?",new String[]{id_demuc});
+	    Log.e("update Image de muc thành cong la 1 else la 0","kq=="+ret);   
+ }
+ 
+ public De_Muc get_de_muc(String id_demuc) throws SQLException{
+		Cursor cur = mDb.query(true, DE_MUC, new String[]{"ID","Noi_Dung","ID_Chuong","Huong_Dan"} ,null, null, null, null, null, null);
+		
+		if(cur.moveToFirst()){
+			do{
+			String id = cur.getString(cur.getColumnIndex("ID"));
+			String nd = cur.getString(cur.getColumnIndex("Noi_Dung"));
+			String id_ch = cur.getString(cur.getColumnIndex("ID_Chuong"));
+			 if(cur.getBlob(cur.getColumnIndex("Huong_Dan"))!= null){
+		     	byte[] blob = cur.getBlob(cur.getColumnIndex("Huong_Dan"));
+		     	Bitmap huong_dan = Untility.getPhoto(blob);
+		     	if(id_demuc.equals(id)== true){
+					return new De_Muc(id,nd,id_ch,huong_dan);
+					
+				}
+			 }
+			//String huong_dan = "Tự mà học đi em ak :p";
+			//String fk = cur.getString(cur.getColumnIndex("DG_Rang_Buoc"));
+			
+			}while(cur.moveToNext());
+			
+		}
+		
+		return null;
+		
+	}
+ 
 }
 	

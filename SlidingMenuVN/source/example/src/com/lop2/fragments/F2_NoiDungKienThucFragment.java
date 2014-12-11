@@ -1,5 +1,8 @@
 package com.lop2.fragments;
 
+import inout2nd.De_Muc;
+import inout2nd.IOData;
+
 import com.jeremyfeinstein.slidingmenu.example.R;
 
 import android.annotation.SuppressLint;
@@ -44,7 +47,17 @@ public class F2_NoiDungKienThucFragment extends Fragment {
 		// construct the RelativeLayout
 		RelativeLayout v = new RelativeLayout(getActivity());
 		ImageView backGround = new ImageView(v.getContext());
-		backGround.setImageResource(R.drawable.peacock);
+		//lay out hinh con cong duy test
+		IOData data = new IOData();
+		De_Muc demuc_1 = data.getde_muc(idDeMuc);
+		Log.e("id de muc hinh con cong", idDeMuc);
+		//backGround.setImageResource(R.drawable.peacock);
+		
+		// ảnh hướng dẫn có set ảnh  // ko set hình con công
+		if(demuc_1.getHuongDan()==null)
+				backGround.setImageBitmap(demuc_1.getHuongDan());
+		else   backGround.setImageResource(R.drawable.peacock); 
+		
 		Log.e("Changer2_KienThucDeMucFragment", "NoiDungKienThuc~ Hình Con công: " +idDeMuc);
 		RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
